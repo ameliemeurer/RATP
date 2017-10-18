@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# DATABASE
+
+Construction & exploitation de la base de données
+
+
+## library
+
+```{r}
+library("dplyr")
+library("readr")
+
+getwd()
+
+```
+
+
+## construction full_base
+
+```{r}
+stop_times <- read.csv("DATA/RATP_GTFS_FULL/stop_times.txt")
+
+routes <- read.csv("DATA/RATP_GTFS_FULL/routes.txt")
+
+stops <- read.csv("DATA/RATP_GTFS_FULL/stops.txt")
+
+trips <- read.csv("DATA/RATP_GTFS_FULL/trips.txt")
+
+
+full_base <- routes %>% 
+  full_join( trips, id = "route_id") %>%
+  full_join ( stop_times, id = "trip_id") %>%
+  full_join( stops, id = "stop_id")
+
+View(full_base)
+
+
+```
+
+
+## fonction save_as_csv
+
+```{r}
+library(assertthat)
+library(utils)
+
+save_as_csv <- function(dataset, filename, row.names = FALSE, ...){
+  assert_that(has_extension(filename,"csv"))
+  assert_that(is.dir(dirname(filename)))
+  assert_that(is.writeable(dirname(filename)))
+  assert_that(not_empty(dataset))
+  assert_that(is.data.frame(dataset))
+
+  write.csv2( x = dataset, file  = filename, row.names = row.names, ...)
+
+  invisible(normalizePath(filename))
+
+}
+
+\dontrun{save_as_csv( full_base, "full_base.csv")}
+
+```
+
+
+## construction base_metro
+
+```{r}
+base_metro <-full_base %>%
+  filter( route_type == 1 | route_type == 2) %>%
+  subset(select = -c(agency_id, route_text_color, route_desc, route_url,route_color, route_text_color, trip_headsign, shape_id, stop_headsign, shape_dist_traveled, stop_code, parent_station))
+
+View(base_metro)
+
+\dontrun{save_as_csv(base_metro, "base_metro.csv")}
+
+
+```
+
+
+
+
+
