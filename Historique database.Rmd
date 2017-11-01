@@ -180,4 +180,14 @@ base_trajet_total <- rbind.data.frame(base_trajet_metro, base_trajet_rera, base_
 
 ```
 
+## change en valeurs 
+
+```{r}
+library(forcats)
+base_trajet_total$route_short_name <- fct_relevel(base_trajet_total$route_short_name, c(1, 2, 3, "3B", 4, 5, 6, 7, "7B", 8, 9, 10, 11, 12, 13, 14, "A", "B"))
+
+```
+
+
+
 
