@@ -175,13 +175,18 @@ $(document).ready(function () {
 <div id="database" class="section level1">
 <h1>DATABASE</h1>
 <p>Construction &amp; exploitation de la base de données</p>
-<div id="library" class="section level2">
-<h2>library</h2>
+<div id="library-necessaires-par-la-suite" class="section level2">
+<h2>library nécéssaires par la suite</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShcImRwbHlyXCIpXG5saWJyYXJ5KFwicmVhZHJcIilcblxuZ2V0d2QoKVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShcImRwbHlyXCIpXG5saWJyYXJ5KFwicmVhZHJcIilcbmxpYnJhcnkoXCJnZ3Bsb3QyXCIpXG5saWJyYXJ5KFwiZ2dwbG90MlwiKVxubGlicmFyeShcImdndGhlbWVzXCIpXG5saWJyYXJ5KFwibGVhZmxldFwiKVxuI2plIGZhaXMgdW4gY29tZW50YWlyZSBxdWkgbmUgc2VydCDDoCByaXVlbiBcblxuZ2V0d2QoKVxuXG5gYGAifQ== -->
 <pre class="r"><code>library(&quot;dplyr&quot;)
 library(&quot;readr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;ggthemes&quot;)
+library(&quot;leaflet&quot;)
+#je fais un comentaire qui ne sert à riuen 
 
 getwd()
 </code></pre>
@@ -189,8 +194,8 @@ getwd()
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="construction-full_base" class="section level2">
-<h2>construction full_base</h2>
+<div id="construction-full_base-juste-un-join-de-nos-bases" class="section level2">
+<h2>construction full_base : juste un join de nos bases</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RvcF90aW1lcyA8LSByZWFkLmNzdihcIkRBVEEvUkFUUF9HVEZTX0ZVTEwvc3RvcF90aW1lcy50eHRcIilcblxucm91dGVzIDwtIHJlYWQuY3N2KFwiREFUQS9SQVRQX0dURlNfRlVMTC9yb3V0ZXMudHh0XCIpXG5cbnN0b3BzIDwtIHJlYWQuY3N2KFwiREFUQS9SQVRQX0dURlNfRlVMTC9zdG9wcy50eHRcIilcblxudHJpcHMgPC0gcmVhZC5jc3YoXCJEQVRBL1JBVFBfR1RGU19GVUxML3RyaXBzLnR4dFwiKVxuXG5cbmZ1bGxfYmFzZSA8LSByb3V0ZXMgJT4lIFxuICBmdWxsX2pvaW4oIHRyaXBzLCBpZCA9IFwicm91dGVfaWRcIikgJT4lXG4gIGZ1bGxfam9pbiAoIHN0b3BfdGltZXMsIGlkID0gXCJ0cmlwX2lkXCIpICU+JVxuICBmdWxsX2pvaW4oIHN0b3BzLCBpZCA9IFwic3RvcF9pZFwiKVxuXG5WaWV3KGZ1bGxfYmFzZSlcblxuXG5gYGAifQ== -->
@@ -214,11 +219,11 @@ View(full_base)
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="fonction-save_as_csv" class="section level2">
-<h2>fonction save_as_csv</h2>
+<div id="fonction-save_as_csv-pour-sauvegarder-cette-base" class="section level2">
+<h2>fonction save_as_csv : pour sauvegarder cette base</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShhc3NlcnR0aGF0KVxubGlicmFyeSh1dGlscylcblxuc2F2ZV9hc19jc3YgPC0gZnVuY3Rpb24oZGF0YXNldCwgZmlsZW5hbWUsIHJvdy5uYW1lcyA9IEZBTFNFLCAuLi4pe1xuICBhc3NlcnRfdGhhdChoYXNfZXh0ZW5zaW9uKGZpbGVuYW1lLFwiY3N2XCIpKVxuICBhc3NlcnRfdGhhdChpcy5kaXIoZGlybmFtZShmaWxlbmFtZSkpKVxuICBhc3NlcnRfdGhhdChpcy53cml0ZWFibGUoZGlybmFtZShmaWxlbmFtZSkpKVxuICBhc3NlcnRfdGhhdChub3RfZW1wdHkoZGF0YXNldCkpXG4gIGFzc2VydF90aGF0KGlzLmRhdGEuZnJhbWUoZGF0YXNldCkpXG5cbiAgd3JpdGUuY3N2MiggeCA9IGRhdGFzZXQsIGZpbGUgID0gZmlsZW5hbWUsIHJvdy5uYW1lcyA9IHJvdy5uYW1lcywgLi4uKVxuXG4gIGludmlzaWJsZShub3JtYWxpemVQYXRoKGZpbGVuYW1lKSlcblxufVxuXG5cXGRvbnRydW57c2F2ZV9hc19jc3YoIGZ1bGxfYmFzZSwgXCJmdWxsX2Jhc2UuY3N2XCIpfVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbImxpYnJhcnkoYXNzZXJ0dGhhdCkiLCJsaWJyYXJ5KHV0aWxzKSIsIiIsInNhdmVfYXNfY3N2IDwtIGZ1bmN0aW9uKGRhdGFzZXQsIGZpbGVuYW1lLCByb3cubmFtZXMgPSBGQUxTRSwgLi4uKXsiLCIgIGFzc2VydF90aGF0KGhhc19leHRlbnNpb24oZmlsZW5hbWUsXCJjc3ZcIikpIiwiICBhc3NlcnRfdGhhdChpcy5kaXIoZGlybmFtZShmaWxlbmFtZSkpKSIsIiAgYXNzZXJ0X3RoYXQoaXMud3JpdGVhYmxlKGRpcm5hbWUoZmlsZW5hbWUpKSkiLCIgIGFzc2VydF90aGF0KG5vdF9lbXB0eShkYXRhc2V0KSkiLCIgIGFzc2VydF90aGF0KGlzLmRhdGEuZnJhbWUoZGF0YXNldCkpIiwiIiwiICB3cml0ZS5jc3YyKCB4ID0gZGF0YXNldCwgZmlsZSAgPSBmaWxlbmFtZSwgcm93Lm5hbWVzID0gcm93Lm5hbWVzLCAuLi4pIiwiIiwiICBpbnZpc2libGUobm9ybWFsaXplUGF0aChmaWxlbmFtZSkpIiwiIiwifSIsIiIsIlxcZG9udHJ1bntzYXZlX2FzX2NzdiggZnVsbF9iYXNlLCBcImZ1bGxfYmFzZS5jc3ZcIil9Il19 -->
 <pre class="r"><code>library(assertthat)
 library(utils)
 
@@ -235,24 +240,139 @@ save_as_csv &lt;- function(dataset, filename, row.names = FALSE, ...){
 
 }
 
-\dontrun{save_as_csv( full_base, &quot;full_base.csv&quot;)}
-</code></pre>
+\dontrun{save_as_csv( full_base, &quot;full_base.csv&quot;)}</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="construction-base_metro" class="section level2">
-<h2>construction base_metro</h2>
+<div id="construction-base_metro-on-ne-garde-que-le-rer-et-le-metro-suppression-des-lignes-qui-concernent-le-bus-tram" class="section level2">
+<h2>construction base_metro : on ne garde que le RER et le métro (suppression des lignes qui concernent le bus, tram… )</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV9tZXRybyA8LWZ1bGxfYmFzZSAlPiVcbiAgZmlsdGVyKCByb3V0ZV90eXBlID09IDEgfCByb3V0ZV90eXBlID09IDIpICU+JVxuICBzdWJzZXQoc2VsZWN0ID0gLWMoYWdlbmN5X2lkLCByb3V0ZV90ZXh0X2NvbG9yLCByb3V0ZV9kZXNjLCByb3V0ZV91cmwscm91dGVfY29sb3IsIHJvdXRlX3RleHRfY29sb3IsIHRyaXBfaGVhZHNpZ24sIHNoYXBlX2lkLCBzdG9wX2hlYWRzaWduLCBzaGFwZV9kaXN0X3RyYXZlbGVkLCBzdG9wX2NvZGUsIHBhcmVudF9zdGF0aW9uKSlcblxuVmlldyhiYXNlX21ldHJvKVxuXG5cXGRvbnRydW57c2F2ZV9hc19jc3YoYmFzZV9tZXRybywgXCJiYXNlX21ldHJvLmNzdlwiKX1cblxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjpbImJhc2VfbWV0cm8gPC1mdWxsX2Jhc2UgJT4lIiwiICBmaWx0ZXIoIHJvdXRlX3R5cGUgPT0gMSB8IHJvdXRlX3R5cGUgPT0gMikgJT4lIiwiICBzdWJzZXQoc2VsZWN0ID0gLWMoYWdlbmN5X2lkLCByb3V0ZV90ZXh0X2NvbG9yLCByb3V0ZV9kZXNjLCByb3V0ZV91cmwscm91dGVfY29sb3IsIHJvdXRlX3RleHRfY29sb3IsIHRyaXBfaGVhZHNpZ24sIHNoYXBlX2lkLCBzdG9wX2hlYWRzaWduLCBzaGFwZV9kaXN0X3RyYXZlbGVkLCBzdG9wX2NvZGUsIHBhcmVudF9zdGF0aW9uKSkiLCIiLCJWaWV3KGJhc2VfbWV0cm8pIiwiIiwiXFxkb250cnVue3NhdmVfYXNfY3N2KGJhc2VfbWV0cm8sIFwiYmFzZV9tZXRyby5jc3ZcIil9Il19 -->
 <pre class="r"><code>base_metro &lt;-full_base %&gt;%
   filter( route_type == 1 | route_type == 2) %&gt;%
   subset(select = -c(agency_id, route_text_color, route_desc, route_url,route_color, route_text_color, trip_headsign, shape_id, stop_headsign, shape_dist_traveled, stop_code, parent_station))
 
 View(base_metro)
 
-\dontrun{save_as_csv(base_metro, &quot;base_metro.csv&quot;)}
+\dontrun{save_as_csv(base_metro, &quot;base_metro.csv&quot;)}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="construction-de-la-base-metro-map-garde-une-station-par-ligne-plus-50000-lignes-pour-tous-les-departs-de-villepinte-mais-une-seule.-en-revanche-charles-de-gaulle-etoile-4-fois-pour-le-rer-a-la-1-la-2-et-la-6" class="section level2">
+<h2>Construction de la base métro map : garde une station par ligne (plus 50000 lignes pour tous les départs de Villepinte, mais une seule). En revanche, charles de gaulle étoile: 4 fois, pour le rer A, la 1, la 2 et la 6</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2Jhc2VfbWV0cm9fbWFwIDwtIGJhc2VfbWV0cm8gJT4lXG4gICNkaXN0aW5jdChzdG9wX25hbWUsIHJvdXRlX3Nob3J0X25hbWUsIC5rZWVwX2FsbCA9IFRSVUUpXG4jVmlldyhiYXNlX21ldHJvX21hcClcbmBgYCJ9 -->
+<pre class="r"><code>#base_metro_map &lt;- base_metro %&gt;%
+  #distinct(stop_name, route_short_name, .keep_all = TRUE)
+#View(base_metro_map)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="base-simplifiee-en-sequences-par-lignes-viz-amelie-tableau-distances" class="section level1">
+<h1>base simplifiée en séquences par lignes (viz Amélie + tableau distances)</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfc2VxIDwtIGJhc2VfbWV0cm8gJT4lXG4gIGRpc3RpbmN0KHN0b3BfbmFtZSwgcm91dGVfaWQsIC5rZWVwX2FsbCA9IFRSVUUpJT4lXG4gICNmaWx0ZXIoZGlyZWN0aW9uX2lkID09IDApICU+JVxuICBhcnJhbmdlKHJvdXRlX2lkLCB0cmlwX2hlYWRzaWduLCBkaXJlY3Rpb25faWQsIHN0b3Bfc2VxdWVuY2UpXG5cbmBgYCJ9 -->
+<pre class="r"><code>base_trajet_seq &lt;- base_metro %&gt;%
+  distinct(stop_name, route_id, .keep_all = TRUE)%&gt;%
+  #filter(direction_id == 0) %&gt;%
+  arrange(route_id, trip_headsign, direction_id, stop_sequence)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="corrections-au-cas-par-cas" class="section level2">
+<h2>corrections au cas par cas</h2>
+<p>RER B : on ne garde que les lignes KOCQ et SOIR . Fais les trajets KOCQ : Aeroport ==&gt; Massy Pal, SOIR ==&gt; Mitry Claye ==&gt; Robinson. Nous avons toutes les stations jusqu’à massy palaiseau, ordonnées. mais en double sur la branche principale</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfcmVyYiA8LSBiYXNlX3RyYWpldF9zZXEgJT4lIFxuICBmaWx0ZXIgKHJvdXRlX3Nob3J0X25hbWUgPT1cIkJcIiwgdHJpcF9oZWFkc2lnbiA9PVwiS09DUVwiIHwgdHJpcF9oZWFkc2lnbiA9PVwiU09JUlwiKVxuXG5gYGAifQ== -->
+<pre class="r"><code>base_trajet_rerb &lt;- base_trajet_seq %&gt;% 
+  filter (route_short_name ==&quot;B&quot;, trip_headsign ==&quot;KOCQ&quot; | trip_headsign ==&quot;SOIR&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>RER A : NELY ==&gt; Saint Germain Boissy Saint Léger, Cergy le Haut ==&gt; Marne la Vallée</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfcmVyYSA8LWJhc2VfdHJhamV0X3NlcSAlPiUgXG4gIGZpbHRlciAocm91dGVfc2hvcnRfbmFtZT09XCJBXCIsIHRyaXBfaGVhZHNpZ249PSBcIk5FTFlcIiB8IHRyaXBfaGVhZHNpZ24gPT1cIlFJS1lcIilcblxuYGBgIn0= -->
+<pre class="r"><code>base_trajet_rera &lt;-base_trajet_seq %&gt;% 
+  filter (route_short_name==&quot;A&quot;, trip_headsign== &quot;NELY&quot; | trip_headsign ==&quot;QIKY&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Metro 7 : supprimer 4 stations qui apparaissent en double</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfNyA8LSBiYXNlX3RyYWpldF9zZXEgJT4lIFxuICBmaWx0ZXIgKHJvdXRlX3Nob3J0X25hbWUgPT0gNywgc3RvcF9pZCAhPSAyNTA1LCBzdG9wX2lkICE9IDI1MDYsIHN0b3BfaWQgIT0gMjUxOSwgc3RvcF9pZCAhPSAyMjUwKVxuXG5gYGAifQ== -->
+<pre class="r"><code>base_trajet_7 &lt;- base_trajet_seq %&gt;% 
+  filter (route_short_name == 7, stop_id != 2505, stop_id != 2506, stop_id != 2519, stop_id != 2250)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Metro 7B : problème avec la boucle</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhamV0N0JfMCA8LWJhc2VfdHJhamV0X3NlcSAlPiUgZmlsdGVyKHJvdXRlX3Nob3J0X25hbWUgPT0gJzdCJywgZGlyZWN0aW9uX2lkID09IDAsIHN0b3BfaWQgIT0gMTc5NyApXG50cmFqZXQ3Ql8xIDwtYmFzZV90cmFqZXRfc2VxICU+JSBmaWx0ZXIocm91dGVfc2hvcnRfbmFtZSA9PSAnN0InLCBkaXJlY3Rpb25faWQgPT0gMSwgc3RvcF9pZCAhPSAxNjM1IClcblxudHJhamV0N0JfMTIgPC0gdHJhamV0N0JfMSAlPiUgZmlsdGVyIChzdG9wX2lkPT0gMTc5NykgJT4lIG11dGF0ZShzdG9wX3NlcXVlbmNlID0yKVxudHJhamV0N0JfMTMgPC0gdHJhamV0N0JfMSAlPiUgZmlsdGVyIChzdG9wX2lkIT0gMTc5NylcblxuYmFzZV90cmFqZXRfN0IgPC0gcmJpbmQodHJhamV0N0JfMCwgdHJhamV0N0JfMTIsdHJhamV0N0JfMTMpXG5cbmJhc2VfdHJhamV0XzdCIDwtIGJhc2VfdHJhamV0XzdCX3RvdGFsICU+JSBhcnJhbmdlICggZGlyZWN0aW9uX2lkLCBzdG9wX3NlcXVlbmNlKVxuXG5gYGAifQ== -->
+<pre class="r"><code>trajet7B_0 &lt;-base_trajet_seq %&gt;% filter(route_short_name == '7B', direction_id == 0, stop_id != 1797 )
+trajet7B_1 &lt;-base_trajet_seq %&gt;% filter(route_short_name == '7B', direction_id == 1, stop_id != 1635 )
+
+trajet7B_12 &lt;- trajet7B_1 %&gt;% filter (stop_id== 1797) %&gt;% mutate(stop_sequence =2)
+trajet7B_13 &lt;- trajet7B_1 %&gt;% filter (stop_id!= 1797)
+
+base_trajet_7B &lt;- rbind(trajet7B_0, trajet7B_12,trajet7B_13)
+
+base_trajet_7B &lt;- base_trajet_7B_total %&gt;% arrange ( direction_id, stop_sequence)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Metro 13 : même problème que la 7</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfMTMgPC0gYmFzZV90cmFqZXRfdG90YWwgJT4lIFxuICBmaWx0ZXIgKHJvdXRlX3Nob3J0X25hbWUgPT0xMykgJT4lIGZpbHRlciAoKHNlcnZpY2VfaWQgIT0gMjI4MDQwMCB8IHRyaXBfaGVhZHNpZ24gIT0gMjAxKSAmIChzZXJ2aWNlX2lkICE9IDIyODA0MDAgfCB0cmlwX2hlYWRzaWduICE9IDIwMikgJiAoc2VydmljZV9pZCAhPSAyMjgwNDA1IHwgdHJpcF9oZWFkc2lnbiAhPSAxMDIpKVxuXG5gYGAifQ== -->
+<pre class="r"><code>base_trajet_13 &lt;- base_trajet_total %&gt;% 
+  filter (route_short_name ==13) %&gt;% filter ((service_id != 2280400 | trip_headsign != 201) &amp; (service_id != 2280400 | trip_headsign != 202) &amp; (service_id != 2280405 | trip_headsign != 102))
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Metro 10 : supprimer trip_short_name 104 (trip incomplet et boucle bizarre)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfMTAgPC0gYmFzZV90cmFqZXRfc2VxICU+JSBcbiAgZmlsdGVyIChyb3V0ZV9zaG9ydF9uYW1lID09MTAsIHRyaXBfc2hvcnRfbmFtZSAhPSAxMDQpXG5cbmBgYCJ9 -->
+<pre class="r"><code>base_trajet_10 &lt;- base_trajet_seq %&gt;% 
+  filter (route_short_name ==10, trip_short_name != 104)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Toutes les autres lignes sans problème :</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfbWV0cm8gPC0gYmFzZV90cmFqZXRfc2VxICU+JVxuICBmaWx0ZXIocm91dGVfdHlwZSA9PSAxLCByb3V0ZV9zaG9ydF9uYW1lICE9IDcsIHJvdXRlX3Nob3J0X25hbWUgIT0gMTAsIHJvdXRlX3Nob3J0X25hbWUgIT0gMTMsIHJvdXRlX3Nob3J0X25hbWUgIT0gXCI3QlwiKVxuXG5gYGAifQ== -->
+<pre class="r"><code>base_trajet_metro &lt;- base_trajet_seq %&gt;%
+  filter(route_type == 1, route_short_name != 7, route_short_name != 10, route_short_name != 13, route_short_name != &quot;7B&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="base-finale-en-sequences" class="section level2">
+<h2>base finale en sequences</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZV90cmFqZXRfdG90YWwgPC0gcmJpbmQuZGF0YS5mcmFtZShiYXNlX3RyYWpldF9tZXRybywgYmFzZV90cmFqZXRfcmVyYSwgYmFzZV90cmFqZXRfcmVyYiwgYmFzZV90cmFqZXRfNywgYmFzZV90cmFqZXRfMTAsIGJhc2VfdHJhamV0XzEzLCBiYXNlX3RyYWpldF83QilcblxuYGBgIn0= -->
+<pre class="r"><code>base_trajet_total &lt;- rbind.data.frame(base_trajet_metro, base_trajet_rera, base_trajet_rerb, base_trajet_7, base_trajet_10, base_trajet_13, base_trajet_7B)
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -261,7 +381,7 @@ View(base_metro)
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIERBVEFCQVNFDQoNCkNvbnN0cnVjdGlvbiAmIGV4cGxvaXRhdGlvbiBkZSBsYSBiYXNlIGRlIGRvbm7DqWVzDQoNCg0KIyMgbGlicmFyeQ0KDQpgYGB7cn0NCmxpYnJhcnkoImRwbHlyIikNCmxpYnJhcnkoInJlYWRyIikNCg0KZ2V0d2QoKQ0KDQpgYGANCg0KDQojIyBjb25zdHJ1Y3Rpb24gZnVsbF9iYXNlDQoNCmBgYHtyfQ0Kc3RvcF90aW1lcyA8LSByZWFkLmNzdigiREFUQS9SQVRQX0dURlNfRlVMTC9zdG9wX3RpbWVzLnR4dCIpDQoNCnJvdXRlcyA8LSByZWFkLmNzdigiREFUQS9SQVRQX0dURlNfRlVMTC9yb3V0ZXMudHh0IikNCg0Kc3RvcHMgPC0gcmVhZC5jc3YoIkRBVEEvUkFUUF9HVEZTX0ZVTEwvc3RvcHMudHh0IikNCg0KdHJpcHMgPC0gcmVhZC5jc3YoIkRBVEEvUkFUUF9HVEZTX0ZVTEwvdHJpcHMudHh0IikNCg0KDQpmdWxsX2Jhc2UgPC0gcm91dGVzICU+JSANCiAgZnVsbF9qb2luKCB0cmlwcywgaWQgPSAicm91dGVfaWQiKSAlPiUNCiAgZnVsbF9qb2luICggc3RvcF90aW1lcywgaWQgPSAidHJpcF9pZCIpICU+JQ0KICBmdWxsX2pvaW4oIHN0b3BzLCBpZCA9ICJzdG9wX2lkIikNCg0KVmlldyhmdWxsX2Jhc2UpDQoNCg0KYGBgDQoNCg0KIyMgZm9uY3Rpb24gc2F2ZV9hc19jc3YNCg0KYGBge3J9DQpsaWJyYXJ5KGFzc2VydHRoYXQpDQpsaWJyYXJ5KHV0aWxzKQ0KDQpzYXZlX2FzX2NzdiA8LSBmdW5jdGlvbihkYXRhc2V0LCBmaWxlbmFtZSwgcm93Lm5hbWVzID0gRkFMU0UsIC4uLil7DQogIGFzc2VydF90aGF0KGhhc19leHRlbnNpb24oZmlsZW5hbWUsImNzdiIpKQ0KICBhc3NlcnRfdGhhdChpcy5kaXIoZGlybmFtZShmaWxlbmFtZSkpKQ0KICBhc3NlcnRfdGhhdChpcy53cml0ZWFibGUoZGlybmFtZShmaWxlbmFtZSkpKQ0KICBhc3NlcnRfdGhhdChub3RfZW1wdHkoZGF0YXNldCkpDQogIGFzc2VydF90aGF0KGlzLmRhdGEuZnJhbWUoZGF0YXNldCkpDQoNCiAgd3JpdGUuY3N2MiggeCA9IGRhdGFzZXQsIGZpbGUgID0gZmlsZW5hbWUsIHJvdy5uYW1lcyA9IHJvdy5uYW1lcywgLi4uKQ0KDQogIGludmlzaWJsZShub3JtYWxpemVQYXRoKGZpbGVuYW1lKSkNCg0KfQ0KDQpcZG9udHJ1bntzYXZlX2FzX2NzdiggZnVsbF9iYXNlLCAiZnVsbF9iYXNlLmNzdiIpfQ0KDQpgYGANCg0KDQojIyBjb25zdHJ1Y3Rpb24gYmFzZV9tZXRybw0KDQpgYGB7cn0NCmJhc2VfbWV0cm8gPC1mdWxsX2Jhc2UgJT4lDQogIGZpbHRlciggcm91dGVfdHlwZSA9PSAxIHwgcm91dGVfdHlwZSA9PSAyKSAlPiUNCiAgc3Vic2V0KHNlbGVjdCA9IC1jKGFnZW5jeV9pZCwgcm91dGVfdGV4dF9jb2xvciwgcm91dGVfZGVzYywgcm91dGVfdXJsLHJvdXRlX2NvbG9yLCByb3V0ZV90ZXh0X2NvbG9yLCB0cmlwX2hlYWRzaWduLCBzaGFwZV9pZCwgc3RvcF9oZWFkc2lnbiwgc2hhcGVfZGlzdF90cmF2ZWxlZCwgc3RvcF9jb2RlLCBwYXJlbnRfc3RhdGlvbikpDQoNClZpZXcoYmFzZV9tZXRybykNCg0KXGRvbnRydW57c2F2ZV9hc19jc3YoYmFzZV9tZXRybywgImJhc2VfbWV0cm8uY3N2Iil9DQoNCg0KYGBgDQoNCg0KDQoNCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIERBVEFCQVNFDQoNCkNvbnN0cnVjdGlvbiAmIGV4cGxvaXRhdGlvbiBkZSBsYSBiYXNlIGRlIGRvbm7DqWVzDQoNCg0KIyMgbGlicmFyeSBuw6ljw6lzc2FpcmVzIHBhciBsYSBzdWl0ZSANCg0KYGBge3J9DQpsaWJyYXJ5KCJkcGx5ciIpDQpsaWJyYXJ5KCJyZWFkciIpDQpsaWJyYXJ5KCJnZ3Bsb3QyIikNCmxpYnJhcnkoImdncGxvdDIiKQ0KbGlicmFyeSgiZ2d0aGVtZXMiKQ0KbGlicmFyeSgibGVhZmxldCIpDQojamUgZmFpcyB1biBjb21lbnRhaXJlIHF1aSBuZSBzZXJ0IMOgIHJpdWVuIA0KDQpnZXR3ZCgpDQoNCmBgYA0KDQoNCiMjIGNvbnN0cnVjdGlvbiBmdWxsX2Jhc2UgOiBqdXN0ZSB1biBqb2luIGRlIG5vcyBiYXNlcyANCg0KYGBge3J9DQpzdG9wX3RpbWVzIDwtIHJlYWQuY3N2KCJEQVRBL1JBVFBfR1RGU19GVUxML3N0b3BfdGltZXMudHh0IikNCg0Kcm91dGVzIDwtIHJlYWQuY3N2KCJEQVRBL1JBVFBfR1RGU19GVUxML3JvdXRlcy50eHQiKQ0KDQpzdG9wcyA8LSByZWFkLmNzdigiREFUQS9SQVRQX0dURlNfRlVMTC9zdG9wcy50eHQiKQ0KDQp0cmlwcyA8LSByZWFkLmNzdigiREFUQS9SQVRQX0dURlNfRlVMTC90cmlwcy50eHQiKQ0KDQoNCmZ1bGxfYmFzZSA8LSByb3V0ZXMgJT4lIA0KICBmdWxsX2pvaW4oIHRyaXBzLCBpZCA9ICJyb3V0ZV9pZCIpICU+JQ0KICBmdWxsX2pvaW4gKCBzdG9wX3RpbWVzLCBpZCA9ICJ0cmlwX2lkIikgJT4lDQogIGZ1bGxfam9pbiggc3RvcHMsIGlkID0gInN0b3BfaWQiKQ0KDQpWaWV3KGZ1bGxfYmFzZSkNCg0KDQpgYGANCg0KDQojIyBmb25jdGlvbiBzYXZlX2FzX2NzdiA6IHBvdXIgc2F1dmVnYXJkZXIgY2V0dGUgYmFzZSANCg0KYGBge3IgZXZhbD1GQUxTRX0NCmxpYnJhcnkoYXNzZXJ0dGhhdCkNCmxpYnJhcnkodXRpbHMpDQoNCnNhdmVfYXNfY3N2IDwtIGZ1bmN0aW9uKGRhdGFzZXQsIGZpbGVuYW1lLCByb3cubmFtZXMgPSBGQUxTRSwgLi4uKXsNCiAgYXNzZXJ0X3RoYXQoaGFzX2V4dGVuc2lvbihmaWxlbmFtZSwiY3N2IikpDQogIGFzc2VydF90aGF0KGlzLmRpcihkaXJuYW1lKGZpbGVuYW1lKSkpDQogIGFzc2VydF90aGF0KGlzLndyaXRlYWJsZShkaXJuYW1lKGZpbGVuYW1lKSkpDQogIGFzc2VydF90aGF0KG5vdF9lbXB0eShkYXRhc2V0KSkNCiAgYXNzZXJ0X3RoYXQoaXMuZGF0YS5mcmFtZShkYXRhc2V0KSkNCg0KICB3cml0ZS5jc3YyKCB4ID0gZGF0YXNldCwgZmlsZSAgPSBmaWxlbmFtZSwgcm93Lm5hbWVzID0gcm93Lm5hbWVzLCAuLi4pDQoNCiAgaW52aXNpYmxlKG5vcm1hbGl6ZVBhdGgoZmlsZW5hbWUpKQ0KDQp9DQoNClxkb250cnVue3NhdmVfYXNfY3N2KCBmdWxsX2Jhc2UsICJmdWxsX2Jhc2UuY3N2Iil9DQoNCmBgYA0KDQoNCiMjIGNvbnN0cnVjdGlvbiBiYXNlX21ldHJvIDogb24gbmUgZ2FyZGUgcXVlIGxlIFJFUiBldCBsZSBtw6l0cm8gKHN1cHByZXNzaW9uIGRlcyBsaWduZXMgcXVpIGNvbmNlcm5lbnQgbGUgYnVzLCB0cmFtLi4uICkNCg0KYGBge3IgZXZhbD0gRkFMU0V9DQpiYXNlX21ldHJvIDwtZnVsbF9iYXNlICU+JQ0KICBmaWx0ZXIoIHJvdXRlX3R5cGUgPT0gMSB8IHJvdXRlX3R5cGUgPT0gMikgJT4lDQogIHN1YnNldChzZWxlY3QgPSAtYyhhZ2VuY3lfaWQsIHJvdXRlX3RleHRfY29sb3IsIHJvdXRlX2Rlc2MsIHJvdXRlX3VybCxyb3V0ZV9jb2xvciwgcm91dGVfdGV4dF9jb2xvciwgdHJpcF9oZWFkc2lnbiwgc2hhcGVfaWQsIHN0b3BfaGVhZHNpZ24sIHNoYXBlX2Rpc3RfdHJhdmVsZWQsIHN0b3BfY29kZSwgcGFyZW50X3N0YXRpb24pKQ0KDQpWaWV3KGJhc2VfbWV0cm8pDQoNClxkb250cnVue3NhdmVfYXNfY3N2KGJhc2VfbWV0cm8sICJiYXNlX21ldHJvLmNzdiIpfQ0KDQoNCmBgYA0KDQoNCiMjIENvbnN0cnVjdGlvbiBkZSBsYSBiYXNlIG3DqXRybyBtYXAgOiBnYXJkZSB1bmUgc3RhdGlvbiBwYXIgbGlnbmUgKHBsdXMgNTAwMDAgbGlnbmVzIHBvdXIgdG91cyBsZXMgZMOpcGFydHMgZGUgVmlsbGVwaW50ZSwgbWFpcyB1bmUgc2V1bGUpLiBFbiByZXZhbmNoZSwgY2hhcmxlcyBkZSBnYXVsbGUgw6l0b2lsZTogNCBmb2lzLCBwb3VyIGxlIHJlciBBLCBsYSAxLCBsYSAyIGV0IGxhIDYgDQoNCmBgYHtyfQ0KI2Jhc2VfbWV0cm9fbWFwIDwtIGJhc2VfbWV0cm8gJT4lDQogICNkaXN0aW5jdChzdG9wX25hbWUsIHJvdXRlX3Nob3J0X25hbWUsIC5rZWVwX2FsbCA9IFRSVUUpDQojVmlldyhiYXNlX21ldHJvX21hcCkNCmBgYA0KDQoNCiMgYmFzZSBzaW1wbGlmacOpZSBlbiBzw6lxdWVuY2VzIHBhciBsaWduZXMgKHZpeiBBbcOpbGllICsgdGFibGVhdSBkaXN0YW5jZXMpDQoNCmBgYHtyfQ0KYmFzZV90cmFqZXRfc2VxIDwtIGJhc2VfbWV0cm8gJT4lDQogIGRpc3RpbmN0KHN0b3BfbmFtZSwgcm91dGVfaWQsIC5rZWVwX2FsbCA9IFRSVUUpJT4lDQogICNmaWx0ZXIoZGlyZWN0aW9uX2lkID09IDApICU+JQ0KICBhcnJhbmdlKHJvdXRlX2lkLCB0cmlwX2hlYWRzaWduLCBkaXJlY3Rpb25faWQsIHN0b3Bfc2VxdWVuY2UpDQoNCmBgYA0KDQojIyBjb3JyZWN0aW9ucyBhdSBjYXMgcGFyIGNhcw0KDQpSRVIgQiA6IG9uIG5lIGdhcmRlIHF1ZSBsZXMgbGlnbmVzIEtPQ1EgZXQgU09JUiAuIEZhaXMgbGVzIHRyYWpldHMgS09DUSA6IEFlcm9wb3J0ID09PiBNYXNzeSBQYWwsIFNPSVIgPT0+IE1pdHJ5IENsYXllID09PiBSb2JpbnNvbi4gTm91cyBhdm9ucyB0b3V0ZXMgbGVzIHN0YXRpb25zIGp1c3F1J8OgIG1hc3N5IHBhbGFpc2VhdSwgb3Jkb25uw6llcy4gbWFpcyBlbiBkb3VibGUgc3VyIGxhIGJyYW5jaGUgcHJpbmNpcGFsZQ0KDQoNCmBgYHtyfQ0KYmFzZV90cmFqZXRfcmVyYiA8LSBiYXNlX3RyYWpldF9zZXEgJT4lIA0KICBmaWx0ZXIgKHJvdXRlX3Nob3J0X25hbWUgPT0iQiIsIHRyaXBfaGVhZHNpZ24gPT0iS09DUSIgfCB0cmlwX2hlYWRzaWduID09IlNPSVIiKQ0KDQpgYGANCg0KUkVSIEEgOiBORUxZID09PiBTYWludCBHZXJtYWluIEJvaXNzeSBTYWludCBMw6lnZXIsIENlcmd5IGxlIEhhdXQgPT0+IE1hcm5lIGxhIFZhbGzDqWUgDQoNCmBgYHtyfQ0KYmFzZV90cmFqZXRfcmVyYSA8LWJhc2VfdHJhamV0X3NlcSAlPiUgDQogIGZpbHRlciAocm91dGVfc2hvcnRfbmFtZT09IkEiLCB0cmlwX2hlYWRzaWduPT0gIk5FTFkiIHwgdHJpcF9oZWFkc2lnbiA9PSJRSUtZIikNCg0KYGBgDQoNCg0KTWV0cm8gNyA6IHN1cHByaW1lciA0IHN0YXRpb25zIHF1aSBhcHBhcmFpc3NlbnQgZW4gZG91YmxlDQoNCmBgYHtyfQ0KYmFzZV90cmFqZXRfNyA8LSBiYXNlX3RyYWpldF9zZXEgJT4lIA0KICBmaWx0ZXIgKHJvdXRlX3Nob3J0X25hbWUgPT0gNywgc3RvcF9pZCAhPSAyNTA1LCBzdG9wX2lkICE9IDI1MDYsIHN0b3BfaWQgIT0gMjUxOSwgc3RvcF9pZCAhPSAyMjUwKQ0KDQpgYGANCg0KTWV0cm8gN0IgOiBwcm9ibMOobWUgYXZlYyBsYSBib3VjbGUNCg0KYGBge3J9DQp0cmFqZXQ3Ql8wIDwtYmFzZV90cmFqZXRfc2VxICU+JSBmaWx0ZXIocm91dGVfc2hvcnRfbmFtZSA9PSAnN0InLCBkaXJlY3Rpb25faWQgPT0gMCwgc3RvcF9pZCAhPSAxNzk3ICkNCnRyYWpldDdCXzEgPC1iYXNlX3RyYWpldF9zZXEgJT4lIGZpbHRlcihyb3V0ZV9zaG9ydF9uYW1lID09ICc3QicsIGRpcmVjdGlvbl9pZCA9PSAxLCBzdG9wX2lkICE9IDE2MzUgKQ0KDQp0cmFqZXQ3Ql8xMiA8LSB0cmFqZXQ3Ql8xICU+JSBmaWx0ZXIgKHN0b3BfaWQ9PSAxNzk3KSAlPiUgbXV0YXRlKHN0b3Bfc2VxdWVuY2UgPTIpDQp0cmFqZXQ3Ql8xMyA8LSB0cmFqZXQ3Ql8xICU+JSBmaWx0ZXIgKHN0b3BfaWQhPSAxNzk3KQ0KDQpiYXNlX3RyYWpldF83QiA8LSByYmluZCh0cmFqZXQ3Ql8wLCB0cmFqZXQ3Ql8xMix0cmFqZXQ3Ql8xMykNCg0KYmFzZV90cmFqZXRfN0IgPC0gYmFzZV90cmFqZXRfN0JfdG90YWwgJT4lIGFycmFuZ2UgKCBkaXJlY3Rpb25faWQsIHN0b3Bfc2VxdWVuY2UpDQoNCmBgYA0KDQpNZXRybyAxMyA6IG3Dqm1lIHByb2Jsw6htZSBxdWUgbGEgNw0KDQpgYGB7cn0NCmJhc2VfdHJhamV0XzEzIDwtIGJhc2VfdHJhamV0X3RvdGFsICU+JSANCiAgZmlsdGVyIChyb3V0ZV9zaG9ydF9uYW1lID09MTMpICU+JSBmaWx0ZXIgKChzZXJ2aWNlX2lkICE9IDIyODA0MDAgfCB0cmlwX2hlYWRzaWduICE9IDIwMSkgJiAoc2VydmljZV9pZCAhPSAyMjgwNDAwIHwgdHJpcF9oZWFkc2lnbiAhPSAyMDIpICYgKHNlcnZpY2VfaWQgIT0gMjI4MDQwNSB8IHRyaXBfaGVhZHNpZ24gIT0gMTAyKSkNCg0KYGBgDQoNCk1ldHJvIDEwIDogc3VwcHJpbWVyIHRyaXBfc2hvcnRfbmFtZSAxMDQgKHRyaXAgaW5jb21wbGV0IGV0IGJvdWNsZSBiaXphcnJlKQ0KDQpgYGB7cn0NCmJhc2VfdHJhamV0XzEwIDwtIGJhc2VfdHJhamV0X3NlcSAlPiUgDQogIGZpbHRlciAocm91dGVfc2hvcnRfbmFtZSA9PTEwLCB0cmlwX3Nob3J0X25hbWUgIT0gMTA0KQ0KDQpgYGANCg0KVG91dGVzIGxlcyBhdXRyZXMgbGlnbmVzIHNhbnMgcHJvYmzDqG1lIDoNCg0KYGBge3J9DQpiYXNlX3RyYWpldF9tZXRybyA8LSBiYXNlX3RyYWpldF9zZXEgJT4lDQogIGZpbHRlcihyb3V0ZV90eXBlID09IDEsIHJvdXRlX3Nob3J0X25hbWUgIT0gNywgcm91dGVfc2hvcnRfbmFtZSAhPSAxMCwgcm91dGVfc2hvcnRfbmFtZSAhPSAxMywgcm91dGVfc2hvcnRfbmFtZSAhPSAiN0IiKQ0KDQpgYGANCg0KDQojIyBiYXNlIGZpbmFsZSBlbiBzZXF1ZW5jZXMNCg0KYGBge3J9DQpiYXNlX3RyYWpldF90b3RhbCA8LSByYmluZC5kYXRhLmZyYW1lKGJhc2VfdHJhamV0X21ldHJvLCBiYXNlX3RyYWpldF9yZXJhLCBiYXNlX3RyYWpldF9yZXJiLCBiYXNlX3RyYWpldF83LCBiYXNlX3RyYWpldF8xMCwgYmFzZV90cmFqZXRfMTMsIGJhc2VfdHJhamV0XzdCKQ0KDQpgYGANCg0KDQo=</div>
 
 
 

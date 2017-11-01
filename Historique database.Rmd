@@ -89,8 +89,95 @@ View(base_metro)
 ## Construction de la base métro map : garde une station par ligne (plus 50000 lignes pour tous les départs de Villepinte, mais une seule). En revanche, charles de gaulle étoile: 4 fois, pour le rer A, la 1, la 2 et la 6 
 
 ```{r}
-base_metro_map <- base_metro %>%
-  distinct(stop_name, route_short_name, .keep_all = TRUE)
-View(base_metro_map)
+#base_metro_map <- base_metro %>%
+  #distinct(stop_name, route_short_name, .keep_all = TRUE)
+#View(base_metro_map)
 ```
+
+
+# base simplifiée en séquences par lignes (viz Amélie + tableau distances)
+
+```{r}
+base_trajet_seq <- base_metro %>%
+  distinct(stop_name, route_id, .keep_all = TRUE)%>%
+  #filter(direction_id == 0) %>%
+  arrange(route_id, trip_headsign, direction_id, stop_sequence)
+
+```
+
+## corrections au cas par cas
+
+RER B : on ne garde que les lignes KOCQ et SOIR . Fais les trajets KOCQ : Aeroport ==> Massy Pal, SOIR ==> Mitry Claye ==> Robinson. Nous avons toutes les stations jusqu'à massy palaiseau, ordonnées. mais en double sur la branche principale
+
+
+```{r}
+base_trajet_rerb <- base_trajet_seq %>% 
+  filter (route_short_name =="B", trip_headsign =="KOCQ" | trip_headsign =="SOIR")
+
+```
+
+RER A : NELY ==> Saint Germain Boissy Saint Léger, Cergy le Haut ==> Marne la Vallée 
+
+```{r}
+base_trajet_rera <-base_trajet_seq %>% 
+  filter (route_short_name=="A", trip_headsign== "NELY" | trip_headsign =="QIKY")
+
+```
+
+
+Metro 7 : supprimer 4 stations qui apparaissent en double
+
+```{r}
+base_trajet_7 <- base_trajet_seq %>% 
+  filter (route_short_name == 7, stop_id != 2505, stop_id != 2506, stop_id != 2519, stop_id != 2250)
+
+```
+
+Metro 7B : problème avec la boucle
+
+```{r}
+trajet7B_0 <-base_trajet_seq %>% filter(route_short_name == '7B', direction_id == 0, stop_id != 1797 )
+trajet7B_1 <-base_trajet_seq %>% filter(route_short_name == '7B', direction_id == 1, stop_id != 1635 )
+
+trajet7B_12 <- trajet7B_1 %>% filter (stop_id== 1797) %>% mutate(stop_sequence =2)
+trajet7B_13 <- trajet7B_1 %>% filter (stop_id!= 1797)
+
+base_trajet_7B <- rbind(trajet7B_0, trajet7B_12,trajet7B_13)
+
+base_trajet_7B <- base_trajet_7B_total %>% arrange ( direction_id, stop_sequence)
+
+```
+
+Metro 13 : même problème que la 7
+
+```{r}
+base_trajet_13 <- base_trajet_total %>% 
+  filter (route_short_name ==13) %>% filter ((service_id != 2280400 | trip_headsign != 201) & (service_id != 2280400 | trip_headsign != 202) & (service_id != 2280405 | trip_headsign != 102))
+
+```
+
+Metro 10 : supprimer trip_short_name 104 (trip incomplet et boucle bizarre)
+
+```{r}
+base_trajet_10 <- base_trajet_seq %>% 
+  filter (route_short_name ==10, trip_short_name != 104)
+
+```
+
+Toutes les autres lignes sans problème :
+
+```{r}
+base_trajet_metro <- base_trajet_seq %>%
+  filter(route_type == 1, route_short_name != 7, route_short_name != 10, route_short_name != 13, route_short_name != "7B")
+
+```
+
+
+## base finale en sequences
+
+```{r}
+base_trajet_total <- rbind.data.frame(base_trajet_metro, base_trajet_rera, base_trajet_rerb, base_trajet_7, base_trajet_10, base_trajet_13, base_trajet_7B)
+
+```
+
 
