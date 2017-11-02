@@ -14,10 +14,9 @@ Construction & exploitation de la base de données
 library("dplyr")
 library("readr")
 library("ggplot2")
-library("ggplot2")
 library("ggthemes")
 library("leaflet")
-#je fais un comentaire qui ne sert à riuen 
+
 
 getwd()
 
@@ -76,11 +75,11 @@ save_as_csv <- function(dataset, filename, row.names = FALSE, ...){
 ```{r eval= FALSE}
 base_metro <-full_base %>%
   filter( route_type == 1 | route_type == 2) %>%
-  subset(select = -c(agency_id, route_text_color, route_desc, route_url,route_color, route_text_color, trip_headsign, shape_id, stop_headsign, shape_dist_traveled, stop_code, parent_station))
+  subset(select = -c(agency_id, route_text_color, route_desc, route_url,route_color, route_text_color, shape_id, stop_headsign, shape_dist_traveled, stop_code, parent_station))
 
 View(base_metro)
 
-\dontrun{save_as_csv(base_metro, "base_metro.csv")}
+save_as_csv(base_metro, "base_metro.csv")
 
 
 ```
@@ -144,14 +143,14 @@ trajet7B_13 <- trajet7B_1 %>% filter (stop_id!= 1797)
 
 base_trajet_7B <- rbind(trajet7B_0, trajet7B_12,trajet7B_13)
 
-base_trajet_7B <- base_trajet_7B_total %>% arrange ( direction_id, stop_sequence)
+base_trajet_7B <- base_trajet_7B %>% arrange ( direction_id, stop_sequence)
 
 ```
 
 Metro 13 : même problème que la 7
 
 ```{r}
-base_trajet_13 <- base_trajet_total %>% 
+base_trajet_13 <- base_trajet_seq %>% 
   filter (route_short_name ==13) %>% filter ((service_id != 2280400 | trip_headsign != 201) & (service_id != 2280400 | trip_headsign != 202) & (service_id != 2280405 | trip_headsign != 102))
 
 ```
