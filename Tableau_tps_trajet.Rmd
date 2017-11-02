@@ -1,0 +1,149 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Tableau temps de trajets
+
+Calcul des temps de trajets moyen entre deux stations (les "weights") afin de pouvoir utiliser l'algorithme Dijkstra.
+
+Il existe deux types de temps de trajet :
+- type 1 : temps de trajet entre deux stations consécutives sur la même ligne
+- type 2 : temps de correspondance dans une même station entre deux lignes (à pieds)
+
+
+## 1 : temps entre deux stations sur une même ligne
+
+
+```{r}
+View(base_trajet_total)
+```
+
+Dans la base de données base_trajet_total, nous avons selectionné pour chaque ligne un service aller et un service retour omnibus. Pour chaque ligne, nous avons comme information :
+- les stop_sequence qui décrivent le numéro de l'arret (stop_name) sur la ligne et nous permettent donc de connaitre l'ordre des stations sur la ligne
+- l'heure d'arrivée et l'heure de départ du train dans chaque station. Comme nous avons sélectionné un service particulier à chaque fois, ces heures sont consécutives.
+
+Nous allons donc, dans chaque ligne, effectuer l'opération :
+(arrival_time dans la station stop_sequence = i) - (departure_time dans la station stop_sequence = i-1 )
+
+Tous les trajets non-consécutifs seront remplis par des NA/0
+
+
+### 1-1 : creation d'une matrice vide
+
+Pour simplifier, nous allons utiliser uniquement les allers, sauf pour les lignes 7B et 10 qui font une boucle (enchainement des stations différentes en fonction de l'aller et du retour)
+
+_création de la base_
+
+- sélection des allers pour toutes les lignes sauf 10 et 7B : 
+- à noter : à cause des embranchements, les lignes A, B, 7, 13 sont dupliquées pour avoir toutes les stations
+
+```{r}
+base_trajet_aller <- base_trajet_total %>%
+  filter(route_short_name != 10 & route_short_name != '7B' & direction_id == 0 | route_short_name == 10 | route_short_name == '7B')
+
+View(base_trajet_aller)
+```
+
+_matrice bonne taille_
+
+```{r}
+# matrice de la taille des lignes gardées dans base_trajet_aller
+m <- matrix( NA ,nrow= length(base_trajet_aller$stop_id), ncol = length(base_trajet_aller$stop_id))
+
+```
+
+_nom des lignes/colonnes_
+
+route_short_name/direction_id/trip_headsign/stop_sequence
+
+
+
+```{r}
+library(tidyr)
+
+base_trajet_aller2 <- base_trajet_aller %>%
+  unite(nom_var, c(route_short_name,direction_id,trip_headsign,stop_sequence), sep = "/")
+
+
+nom_vect <- c(base_trajet_aller2$nom_var)
+
+
+colnames(m) <- nom_vect
+rownames(m) <- nom_vect
+
+
+# Test lecture matrice
+
+i <- '1/0/104/1'
+j <- '1/0/104/1'
+  
+m[i,j]
+
+```
+
+
+### 1-2 : remplir la matrice
+
+
+
+Problème sur le type arrival_time : factor avec les levels de la forme :"00:00:00"
+- essai 1 : transformer le type des levels avec as.numeric : echec
+- essai 2 : calculer l'intervalle entre deux temps avec lubridate :echec
+
+```{r}
+# test soustraction :
+
+(base_trajet_aller%>%filter(route_short_name == 1, stop_sequence ==2))$arrival_time[1] - (base_trajet_aller%>%filter(route_short_name == 1, stop_sequence ==1))$arrival_time[1]
+
+#essai1 :
+
+## as.numeric(as.character()) ne marche pas car arrival_time = factor
+#base_trajet_aller <- base_trajet_aller %>% mutate(as.numeric(levels(arrival_time)[arrival_time]))
+
+
+# essai 2 :
+
+
+library(lubridate)
+
+
+test <- interval(start = hour(base_trajet_aller%>%filter(route_short_name == 1, stop_sequence ==1))$arrival_time[1], stop = hour(base_trajet_aller%>%filter(route_short_name == 1, stop_sequence ==2))$arrival_time[1])
+
+
+
+```
+
+
+Algo en lui-même :
+
+```{r}
+
+
+
+for (u in (base_trajet_aller%>%distinct(route_short_name))$route_short_name) {
+  for (v in (base_trajet_aller%>%filter(route_short_name == u))$direction_id) {
+    for (w in (base_trajet_aller%>%filter(route_short_name == u, direction_id == v))$trip_headsign) {
+      
+      l <- c((base_trajet_aller%>%filter(route_short_name == u, direction_id == v, trip_headsign == w))$stop_sequence)
+        
+      for (y in range(length(l) - 1)) {
+        
+        z <- str.default(u,'/',v,'/',w,'/',y)  ## erreur dans la transformation en str
+        t <- str.default(u,'/',v,'/',w,'/',y+1)
+        
+        
+        m[z,t] = "SOUSTRACTION"
+        
+        
+      }
+      
+    }
+    
+  }
+}
+
+
+```
+
+

@@ -35,12 +35,12 @@ stops <- read.csv("DATA/RATP_GTFS_FULL/stops.txt")
 trips <- read.csv("DATA/RATP_GTFS_FULL/trips.txt")
 
 
-full_base <- routes %>% 
-  full_join( trips, id = "route_id") %>%
-  full_join ( stop_times, id = "trip_id") %>%
-  full_join( stops, id = "stop_id")
+full_base <- stops %>% 
+  full_join( stop_times, id = "stop_id") %>%
+  full_join( trips, id = "trip_id") %>%
+  full_join( routes, id = "route_id")
 
-View(full_base)
+#View(full_base)
 
 
 ```
@@ -65,7 +65,7 @@ save_as_csv <- function(dataset, filename, row.names = FALSE, ...){
 
 }
 
-\dontrun{save_as_csv( full_base, "full_base.csv")}
+#save_as_csv( full_base, "full_base.csv")
 
 ```
 
@@ -97,6 +97,7 @@ save_as_csv(base_metro, "base_metro.csv")
 # base simplifiée en séquences par lignes (viz Amélie + tableau distances)
 
 ```{r}
+
 base_trajet_seq <- base_metro %>%
   distinct(stop_name, route_id, .keep_all = TRUE)%>%
   #filter(direction_id == 0) %>%
@@ -122,7 +123,6 @@ base_trajet_rera <-base_trajet_seq %>%
   filter (route_short_name=="A", trip_headsign== "NELY" | trip_headsign =="QIKY")
 
 ```
-
 
 Metro 7 : supprimer 4 stations qui apparaissent en double
 
@@ -185,8 +185,11 @@ base_trajet_total <- rbind.data.frame(base_trajet_metro, base_trajet_rera, base_
 library(forcats)
 base_trajet_total$route_short_name <- fct_relevel(base_trajet_total$route_short_name, c(1, 2, 3, "3B", 4, 5, 6, 7, "7B", 8, 9, 10, 11, 12, 13, 14, "A", "B"))
 
+
+base_trajet_total <- base_trajet_total %>%
+  arrange(route_short_name, direction_id, trip_headsign, stop_sequence)
+
+View(base_trajet_total)
+
 ```
-
-
-
 
