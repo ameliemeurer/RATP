@@ -129,8 +129,8 @@ for (u in (base_trajet_aller%>%distinct(route_short_name))$route_short_name) {
         
       for (y in range(length(l) - 1)) {
         
-        z <- str.default(u,'/',v,'/',w,'/',y)  ## erreur dans la transformation en str
-        t <- str.default(u,'/',v,'/',w,'/',y+1)
+        z <- str(u,'/',v,'/',w,'/',y)  ## erreur dans la transformation en str
+        t <- str(u,'/',v,'/',w,'/',y+1)
         
         
         m[z,t] = "SOUSTRACTION"
