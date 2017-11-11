@@ -22,10 +22,15 @@ shinyUI(fluidPage(
   #We choose a sidebar layout
   sidebarLayout(
     sidebarPanel(
-      #Text input
-      textInput(inputId = "latlng", 
-                label = "Meeting point lattitude and longitude:", 
-                value = "40.714224,-73.961452"),
+      
+      #1st station
+      selectizeInput(inputId = "station1", label="Your departure point - metro station (type to avoid going through the list)", 
+                     choices = stations, selected = "Bastille", multiple = FALSE, options = NULL),
+      
+      #2nd station
+      selectizeInput(inputId = "station2", label="Your friends' departure point (type to avoid going through the list)",
+                     choices = stations, multiple = FALSE, selected = "Bastille", options = NULL),
+      
       #Slider
       sliderInput("radius",
                   "Radius around meeting point in metres:",
@@ -40,7 +45,8 @@ shinyUI(fluidPage(
     ),
     
     mainPanel(
-      tableOutput("result_table")
+      tableOutput("result_table"),
+      leafletOutput("leaflet", width = "100%", height = "300px")
     )
   )
 ))
