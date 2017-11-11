@@ -28,11 +28,15 @@ getwd()
 ```{r}
 stop_times <- read.csv("DATA/RATP_GTFS_FULL/stop_times.txt")
 
+View(stop_times)
+
 routes <- read.csv("DATA/RATP_GTFS_FULL/routes.txt")
 
 stops <- read.csv("DATA/RATP_GTFS_FULL/stops.txt")
 
 trips <- read.csv("DATA/RATP_GTFS_FULL/trips.txt")
+
+transfers <- read.csv("DATA/RATP_GTFS_FULL/transfers.txt")
 
 
 full_base <- stops %>% 
@@ -65,7 +69,9 @@ save_as_csv <- function(dataset, filename, row.names = FALSE, ...){
 
 }
 
-#save_as_csv( full_base, "full_base.csv")
+save_as_csv(full_base, "full_base.csv")
+
+save_as_csv(base_trajet_total,"base_trajet_total.csv")
 
 ```
 
@@ -138,7 +144,10 @@ Metro 7B : problème avec la boucle
 trajet7B_0 <-base_trajet_seq %>% filter(route_short_name == '7B', direction_id == 0, stop_id != 1797 )
 trajet7B_1 <-base_trajet_seq %>% filter(route_short_name == '7B', direction_id == 1, stop_id != 1635 )
 
-trajet7B_12 <- trajet7B_1 %>% filter (stop_id== 1797) %>% mutate(stop_sequence =2)
+trajet7B_12 <- trajet7B_1 %>% filter (stop_id== 1797) %>% mutate(stop_sequence =2, departure_time = "17:07:00", arrival_time = "17:07:00")
+
+View(trajet7B_12)
+
 trajet7B_13 <- trajet7B_1 %>% filter (stop_id!= 1797)
 
 base_trajet_7B <- rbind(trajet7B_0, trajet7B_12,trajet7B_13)
@@ -191,5 +200,12 @@ base_trajet_total <- base_trajet_total %>%
 
 View(base_trajet_total)
 
+save_as_csv(base_trajet_total,"base_trajet_total.csv")
+
 ```
+
+
+
+
+
 
