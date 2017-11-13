@@ -5,9 +5,10 @@ output: html_notebook
 
 ```{r}
 library(igraph)
+library(dplyr)
+library(leaflet)
 
 temps_trajet <- read_csv2("temps_trajet.csv")
-View(temps_trajet)
 
 ```
 
@@ -20,22 +21,34 @@ nodes_trajet <- unique(nodes_trajet)
 temps_trajet_igraph <- graph_from_data_frame(d=temps_trajet, vertices = nodes_trajet, directed = F)
 ```
 
-A vous de rentrer dans l'algo! 
+A vous de rentrer dans l'algo! Utilisateur rentre dans l'algo 
 ```{r}
-trajet_plus_court <- shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="Fontenay-aux-Roses"], output = "vpath")
+trajet_plus_court <- shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="République"], output = "vpath")
 
 ```
 
-Option plusieurs trajet dispo 
 ```{r}
-all_shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="Fontenay-aux-Roses"])
+df_trajet_plus_court
+```
+
+Option plusieurs trajet dispo (inutile)
+```{r}
+all_shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="République"])
 ```
 
 
 Ici vous avez le temps total de trajet 
 ```{r}
-distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="Fontenay-aux-Roses"])
+df_distances <- as_data_frame(distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="République"]))
+
 ```
+
+```{r}
+df_distances
+
+df_distances[[min(df_distances)]]
+```
+
 Le nom des stations les unes à la suite des autres 
 ```{r}
 paths <- trajet_plus_court$vpath
@@ -45,6 +58,9 @@ lapply(paths, function(x) { names[x] })
 Pour faire la visualisation 
 ```{r}
 base_trajet_court <- base_trajet_total %>% filter (stop_id %in% V(temps_trajet_igraph)[trajet_plus_court$vpath[[1]]]$name )
+```
+```{r}
+V(temps_trajet_igraph)[trajet_plus_court$vpath[[1]]]$name
 ```
 
 
