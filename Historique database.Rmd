@@ -11,11 +11,13 @@ Construction & exploitation de la base de données
 ## library nécéssaires par la suite 
 
 ```{r}
-library("dplyr")
-library("readr")
-library("ggplot2")
-library("ggthemes")
-library("leaflet")
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(ggthemes)
+library(leaflet)
+library(assertthat)
+library(utils)
 
 
 getwd()
@@ -188,7 +190,7 @@ base_trajet_total <- rbind.data.frame(base_trajet_metro, base_trajet_rera, base_
 
 ```
 
-## change en valeurs 
+change en valeurs 
 
 ```{r}
 library(forcats)
@@ -205,6 +207,131 @@ save_as_csv(base_trajet_total,"base_trajet_total.csv")
 ```
 
 
+
+# DATASET TEMPS TRAJET
+
+création d'une table de données avec 3 colonnes:
+- from_stop_id (point de départ)
+- to_stop_id (point d'arrivée)
+- weight : temps de trajet entre from_stop_id et to_stop_id (en minutes)
+
+
+```{r}
+
+from_stop_id <- data_frame(base_trajet_total$stop_id)
+to_stop_id <- data_frame()
+
+
+for (j in 1:(nrow(from_stop_id)-1)){
+  if (base_trajet_total$stop_sequence[j+1] == (base_trajet_total$stop_sequence[j]+1)) {
+    to_stop_id <- rbind(to_stop_id, base_trajet_total$stop_id[j+1])}
+  else {
+    to_stop_id <- rbind(to_stop_id, NA)
+  }
+}
+
+to_stop_id <- rbind(to_stop_id, NA)
+
+
+weight <- data_frame()
+
+
+for (j in 1:(nrow(from_stop_id)-1)){
+  if (base_trajet_total$stop_sequence[j+1] == (base_trajet_total$stop_sequence[j]+1)) {
+    dat <- c(base_trajet_total$departure_time[j+1], base_trajet_total$arrival_time[j])
+    weight <- rbind(weight, dat[1]-dat[2])}
+  else {
+    weight <- rbind(weight, NA)
+  }
+}
+weight <- rbind(weight, NA)
+
+
+
+temps <- cbind(from_stop_id, to_stop_id, weight)
+colnames(temps) <- c("from_stop_id", "to_stop_id", "weight")
+temps <- na.omit(temps)
+
+View(temps)
+
+
+```
+
+On rajoute maintenant les retours (seuls problèmes, pour la ligne 7B et 10 il n'y a pas d'aller retour dans la loop)
+
+```{r}
+temps_retour <- temps
+
+colnames(temps_retour)[1] <- "to_stop_id"
+colnames(temps_retour)[2] <- "from_stop_id"
+
+temps <- rbind(temps, temps_retour)
+
+```
+
+On règle les problèmes de loop pour la 7B et la 10 en supprimant les chemins qui n'existent pas :
+
+
+```{r}
+
+temps <- temps %>% filter((from_stop_id !=2002 | to_stop_id != 1635) & (from_stop_id !=1635 | to_stop_id != 1756) & (from_stop_id !=1756 | to_stop_id != 1798) & (from_stop_id !=1798 | to_stop_id != 2002) & (from_stop_id != 2193 | to_stop_id != 2346) & (from_stop_id !=2346 | to_stop_id != 2354) & (from_stop_id !=2354 | to_stop_id != 2256) & (from_stop_id !=2256 | to_stop_id != 1903) & (from_stop_id != 2299 | to_stop_id != 1818) & (from_stop_id != 1818 | to_stop_id != 2026) & (from_stop_id !=2026 | to_stop_id != 1817) & (from_stop_id !=1817 | to_stop_id != 2004))
+
+```
+
+
+
+
+
+Ajout de la base de données Transfers, dupliquée en allers et retours
+Temps de correspondance à pied entre deux quais dans une même station
+
+```{r}
+transfers_test <- transfers %>% select (- transfer_type)
+
+colnames(transfers_test)[3] <- "weight"
+
+stop_id_metro  <- base_trajet_total$stop_id
+transfers_metro <- transfers_test[transfers_test$from_stop_id %in% stop_id_metro & transfers_test$to_stop_id %in% stop_id_metro, ]
+
+transfers_metro_retour <- transfers_metro
+
+colnames(transfers_metro_retour)[1] <- "to_stop_id"
+colnames(transfers_metro_retour)[2] <- "from_stop_id"
+
+transfers_total <- rbind(transfers_metro, transfers_metro_retour)
+
+transfers_total <- transfers_total%>%mutate(weight = round(weight/60))
+
+View(transfers_total)
+
+```
+
+Base finale temps_trajet comprenant :
+- les temps de trajet entre deux stations sur une même ligne (dans les deux sens)
+- les temps de correspondance entre deux quais dans une même station
+
+```{r}
+temps_trajet <- rbind(temps, transfers_total)
+temps_trajet <- unique(temps_trajet)
+
+View(temps_trajet)
+```
+
+
+```{r}
+save_as_csv(temps_trajet, "temps_trajet.csv")
+```
+
+
+
+# Table de correspondance stop_id / noms de stations
+
+```{r}
+nodes_trajet <- unique(base_trajet_total[, 1:2])
+
+View(nodes_trajet)
+
+```
 
 
 
