@@ -7,18 +7,22 @@ output: html_notebook
 library(igraph)
 library(dplyr)
 library(leaflet)
+library()
 
-temps_trajet <- read_csv2("temps_trajet.csv")
+temps_trajet <- read.csv2("temps_trajet.csv")
 
+```
+```{r}
+View(base_trajet_court)
 ```
 
 ```{r}
-nodes_trajet <- base_trajet_court[, 1:2]
+nodes_trajet <- base_trajet_total[, 1:2]
 nodes_trajet <- unique(nodes_trajet)
 ```
 
 ```{r}
-temps_trajet_igraph <- graph_from_data_frame(d=temps_trajet, vertices = nodes_trajet, directed = F)
+temps_trajet_igraph <- graph_from_data_frame(d=temps_trajet, vertices = nodes_trajet, directed = T)
 ```
 
 A vous de rentrer dans l'algo! Utilisateur rentre dans l'algo 
@@ -26,41 +30,50 @@ A vous de rentrer dans l'algo! Utilisateur rentre dans l'algo
 trajet_plus_court <- shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="République"], output = "vpath")
 
 ```
-
 ```{r}
-df_trajet_plus_court
+trajet_plus_court
 ```
+
 
 Option plusieurs trajet dispo (inutile)
 ```{r}
-all_shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="République"])
+#all_shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="République"])
 ```
 
 
-Ici vous avez le temps total de trajet 
+Ici vous avez le temps total de trajet : il faut encore l'input de l'utilisateur
 ```{r}
 df_distances <- as_data_frame(distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="République"]))
 
 ```
 
 ```{r}
-df_distances
 
-df_distances[[min(df_distances)]]
+inds = which(df_distances == min(df_distances), arr.ind=TRUE)
+n_colonne <- inds[1, 2]
+```
+Temps de trajet total 
+```{r}
+
+df_distances[inds[1,1], inds[1,2]]
 ```
 
-Le nom des stations les unes à la suite des autres 
+
+Le nom des stations les unes à la suite des autres (pas forcément utile)
 ```{r}
 paths <- trajet_plus_court$vpath
+paths[[n_colonne]]]$name
 names <- V(temps_trajet_igraph)$stop_name
 lapply(paths, function(x) { names[x] })
 ```
 Pour faire la visualisation 
 ```{r}
-base_trajet_court <- base_trajet_total %>% filter (stop_id %in% V(temps_trajet_igraph)[trajet_plus_court$vpath[[1]]]$name )
+base_trajet_court <- base_trajet_total %>% filter (stop_id %in% V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name )
 ```
+
+Donne l'ordre des stations 
 ```{r}
-V(temps_trajet_igraph)[trajet_plus_court$vpath[[1]]]$name
+V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name
 ```
 
 
