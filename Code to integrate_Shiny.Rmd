@@ -15,9 +15,14 @@ files csv nécessaires (sur le drive):
 library(igraph)
 library(dplyr)
 library(leaflet)
+library(forcats)
 
 temps_trajet <- read_csv2("temps_trajet.csv")
-View(temps_trajet)
+
+
+#View(temps_trajet)
+
+
 ```
 
 ## inputs à rentrer dans le code
@@ -39,10 +44,9 @@ temps_trajet_igraph <- graph_from_data_frame(d=temps_trajet, vertices = nodes_tr
 trajet_plus_court <- shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="Porte Maillot"], output = "vpath")
 
 
-
 #Ici vous avez le temps total de trajet : il faut encore l'input de l'utilisateur
 
-df_distances <- as_data_frame(distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name == "Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="Porte Maillot"]))
+df_distances <- as.data.frame(distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name == "Pont de Neuilly"], to = V(temps_trajet_igraph)[stop_name =="Porte Maillot"]))
 
 ## ATTENTION, cette ligne marche parfaitement sur le mac d'Amélie, mais pas sur mon PC (on soupçonne un pb de type sur l'output de distance())
 # on souhaite ici transformer en dataframe de (distances)
@@ -53,6 +57,7 @@ n_colonne <- inds[1, 2] # IMPORTANT pour choisir les stations par la suite
 df_distances[inds[1,1], inds[1,2]]
 
 ```
+
 
 
 ## Calcul du mi-chemin
@@ -101,6 +106,17 @@ base_trajet_court <- base_trajet_total %>% filter (stop_id %in% V(temps_trajet_i
 
 Ici la visualisation ! 
 ```{r}
+
+base_metro_map <- base_trajet_total %>%
+  distinct(stop_name, route_short_name, .keep_all = TRUE)
+
+base_metro_map$route_short_name = factor(base_metro_map$route_short_name)
+
+
+factpal=colorFactor(palette = c("#FFCD00", "#003CA6", "#837902", "#00AE41", "#CF009E", "#FF7E2E", "#6ECA97", "#FA9ABA", "#6ECA97", "#E19BDF", "#B6BD00", "#C9910D", "#704B1C", "#007852", "#6EC4E8", "#62259D", "#E2231A", "#7BA3DC"), 
+            domain = base_metro_map$route_short_name, levels = levels(base_metro_map$route_short_name), ordered = TRUE, na.color = "#808080", alpha = FALSE)
+
+
 map_metro_ligne = leaflet() %>%
   # Add CartoDB background map
   addProviderTiles("CartoDB.DarkMatter") %>%  
@@ -135,6 +151,11 @@ map_metro_ligne = leaflet() %>%
             labels = levels(base_trajet_total$route_short_name),title = "Metro line Paris")
 map_metro_ligne  # Show the map
 ```
+
+
+
+
+
 
 
 ## AUTRES OUTPUT :
