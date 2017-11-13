@@ -71,7 +71,7 @@ Pour faire la visualisation
 base_trajet_court <- base_trajet_total %>% filter (stop_id %in% V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name )
 ```
 
-Donne l'ordre des stations 
+Donne l'ordre des stations par leur stop_id (pas forcément utile)
 ```{r}
 V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name
 ```
