@@ -59,10 +59,10 @@ df_distances[inds[1,1], inds[1,2]]
 ```
 
 
-Le nom des stations les unes à la suite des autres (pas forcément utile)
+Le nom des stations les unes à la suite des autres (peut vous servir)
 ```{r}
-paths <- trajet_plus_court$vpath
-paths[[n_colonne]]]$name
+paths <- trajet_plus_court$vpath # tous les paths 
+paths <- paths[n_colonne] # le path le plus court 
 names <- V(temps_trajet_igraph)$stop_name
 lapply(paths, function(x) { names[x] })
 ```
