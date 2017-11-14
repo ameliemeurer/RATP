@@ -12,6 +12,10 @@ library(httr)
 library(glue)
 library(jsonlite)
 library(dplyr)
+library(readr)
+library(ggplot2)
+library(ggthemes)
+library(leaflet)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -46,7 +50,7 @@ shinyUI(fluidPage(
     
     mainPanel(
       tableOutput("result_table"),
-      leafletOutput("leaflet", width = "100%", height = "300px")
+      leafletOutput("leaflet", width = "100%", height = "200px")
     )
   )
 ))
