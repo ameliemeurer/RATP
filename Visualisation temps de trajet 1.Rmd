@@ -7,7 +7,6 @@ output: html_notebook
 library(igraph)
 library(dplyr)
 library(leaflet)
-library()
 
 temps_trajet <- read.csv2("temps_trajet.csv")
 
@@ -26,11 +25,15 @@ temps_trajet_igraph <- graph_from_data_frame(d=temps_trajet, vertices = nodes_tr
 ```
 
 A vous de rentrer dans l'algo! Utilisateur rentre dans l'algo 
-```{r}
-trajet_plus_court <- shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Boulogne-Jean-Jaurès"], to = V(temps_trajet_igraph)[stop_name =="Javel-André-Citroen"], output = "vpath")
 
-```
 ```{r}
+depart <- "Boulogne-Jean-Jaurès"
+
+
+arrivee <- "Michel-Ange-Molitor"
+
+trajet_plus_court <- shortest_paths(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name ==depart], to = V(temps_trajet_igraph)[stop_name ==arrivee], output = "vpath")
+
 trajet_plus_court
 ```
 
@@ -43,18 +46,7 @@ Option plusieurs trajet dispo (inutile)
 
 Ici vous avez le temps total de trajet : il faut encore l'input de l'utilisateur
 ```{r}
-df_distances <- as.data.frame(distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Boulogne-Jean-Jaurès"], to = V(temps_trajet_igraph)[stop_name =="Javel-André-Citroen"]))
-
-```
-
-
-```{r}
-as_data_frame(distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name =="Boulogne-Jean-Jaurès"], to = V(temps_trajet_igraph)[stop_name =="Javel-André-Citroen"]))
-```
-
-
-```{r}
-
+df_distances <- as.data.frame(distances(temps_trajet_igraph, V(temps_trajet_igraph)[stop_name ==depart], to = V(temps_trajet_igraph)[stop_name ==arrivee]))
 inds = which(df_distances == min(df_distances), arr.ind=TRUE)
 n_colonne <- inds[1, 2]
 ```
@@ -74,14 +66,20 @@ lapply(paths, function(x) { names[x] })
 ```
 Pour faire la visualisation 
 ```{r}
-base_trajet_court <- base_trajet_total %>% filter (stop_id %in% V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name )
+base_trajet_court <- base_trajet_total %>% filter (stop_id %in% V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name ) %>% distinct(stop_id, .keep_all = TRUE)%>% slice(match(V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name, stop_id))
+
+View(base_trajet_court)
 ```
 
 Donne l'ordre des stations par leur stop_id (pas forcément utile)
 ```{r}
 V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name
 ```
-
+```{r}
+dim(base_trajet_court)[1]
+View(temps_trajet)
+View(base_trajet_total)
+```
 
 Ici la visualisation ! 
 ```{r}
@@ -89,6 +87,8 @@ map_metro_ligne = leaflet() %>%
   # Add CartoDB background map
   addProviderTiles("CartoDB.DarkMatter") %>%  
   # Add a marker for each stop
+  addMarkers(lng = base_trajet_court$stop_lon[1], lat = base_trajet_court$stop_lat[1], data= base_trajet_court, popup = "Départ User 1")%>%
+   addMarkers(lng = base_trajet_court$stop_lon[dim(base_trajet_court)[1]], lat = base_trajet_court$stop_lat[dim(base_trajet_court)[1]], data= base_trajet_court, popup = "Départ user 2")%>%
   addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== 1, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#FFCD00")%>%
   addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== 2, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#003CA6")%>%
   addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== 3, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#837902")%>%
