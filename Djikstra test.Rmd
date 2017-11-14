@@ -59,7 +59,7 @@ u=w
 }
 flag[u] = 1 #indicate that we go to this site
 count = count+1
- 
+
 # loop over each node again keeping in mind where we have already been
 for(w in 1:n){
 #if the new route is shorter than the previous route
@@ -87,12 +87,14 @@ return(path)
 ### Run Dijkstra's algorithm with our distance matrix
 prev = dijkstra(n,v,cost,dest)
 path = savepath(prev,dest)
+
  
 ### Print path
 path
 ```
 
+
 ```{r}
-1+1
+
 ```
 
