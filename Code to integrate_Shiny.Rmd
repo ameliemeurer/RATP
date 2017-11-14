@@ -413,15 +413,12 @@ output
 
 
 c1 <- (chemin %>% filter(Total <= mid))$pathlist_from
-c1 <- as.numeric(c1)
-c1
+c1 <- as.numeric(as.character(c1))
+
 c2 <- (chemin %>% filter(Total <= mid))$pathlist_to
-c2 <- as.numeric(as.factor(c1))
-
-
+c2 <- as.numeric(as.character(c2))
 
 chemin_1 <- unique(c(c1,c2))
-chemin_1
 
 base_trajet1 <- base_trajet_total %>% filter (stop_id %in% chemin_1) %>% slice(match(chemin_1, stop_id))
 
