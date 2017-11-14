@@ -23,8 +23,8 @@ library(forcats)
 # Define server logic 
 shinyServer(function(input, output) {
   
-  temps_trajet <- read.csv2('../temps_trajet.csv')
-  base_trajet_total <- read.csv2('../base_trajet_total.csv')
+  temps_trajet <- read.csv2('../data/temps_trajet.csv')
+  base_trajet_total <- read.csv2('../data/base_trajet_total.csv')
   
   # table de correspondance nom de stations/trip_id
   nodes_trajet <- base_trajet_total[, 1:2]
