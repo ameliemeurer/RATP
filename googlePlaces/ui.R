@@ -19,7 +19,7 @@ library(leaflet)
 library(igraph)
 library(forcats)
 
-base_trajet_total <- read.csv2('../../data/base_trajet_total.csv')
+base_trajet_total <- read.csv2('../base_trajet_total.csv')
 stations <- unique(base_trajet_total$stop_name)
 
 # Define UI for application that draws a histogram

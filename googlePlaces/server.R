@@ -23,8 +23,8 @@ library(forcats)
 # Define server logic 
 shinyServer(function(input, output) {
   
-  temps_trajet <- read.csv2('../../data/temps_trajet.csv')
-  base_trajet_total <- read.csv2('../../data/base_trajet_total.csv')
+  temps_trajet <- read.csv2('../temps_trajet.csv')
+  base_trajet_total <- read.csv2('../base_trajet_total.csv')
   
   # table de correspondance nom de stations/trip_id
   nodes_trajet <- base_trajet_total[, 1:2]
@@ -133,9 +133,9 @@ shinyServer(function(input, output) {
       # Add CartoDB background map
       addProviderTiles("CartoDB.DarkMatter") %>%  
       # Add a marker for each stop
-      addMarkers(lng = base_trajet_court$stop_lon[1], lat = base_trajet_court$stop_lat[1], data= base_trajet_court, popup = "Départ User 1")%>%
-      addMarkers(lng = base_trajet1$stop_lon[dim(base_trajet1)[1]], lat = base_trajet1$stop_lat[dim(base_trajet1)[1]], data= base_trajet_court, popup = "Point de retrouvailles")%>%
-      addMarkers(lng = base_trajet_court$stop_lon[dim(base_trajet_court)[1]], lat = base_trajet_court$stop_lat[dim(base_trajet_court)[1]], data= base_trajet_court, popup = "Départ user 2")%>%
+      addMarkers(lng = base_trajet_court$stop_lon[1], lat = base_trajet_court$stop_lat[1], data= base_trajet_court, popup = paste("User 1 departure:", station1))%>%
+      addMarkers(lng = base_trajet1$stop_lon[dim(base_trajet1)[1]], lat = base_trajet1$stop_lat[dim(base_trajet1)[1]], data= base_trajet_court, popup = paste("Meeting point:", sol$mid$stop_name))%>%
+      addMarkers(lng = base_trajet_court$stop_lon[dim(base_trajet_court)[1]], lat = base_trajet_court$stop_lat[dim(base_trajet_court)[1]], data= base_trajet_court, popup = paste("User 2 departure:", station2))%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== 1, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#FFCD00")%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== 2, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#003CA6")%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== 3, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#837902")%>%
@@ -172,8 +172,8 @@ shinyServer(function(input, output) {
       # Add CartoDB background map
       addProviderTiles("CartoDB.DarkMatter") %>%  
       # Add a marker for each stop
-      addMarkers(lng = base_trajet1$stop_lon[1], lat = base_trajet1$stop_lat[1], data= base_trajet1, popup = "Départ User 1")%>%
-      addMarkers(lng = base_trajet1$stop_lon[dim(base_trajet1)[1]], lat = base_trajet1$stop_lat[dim(base_trajet1)[1]], data= base_trajet1, popup = "Départ user 2")%>%
+      addMarkers(lng = base_trajet1$stop_lon[1], lat = base_trajet1$stop_lat[1], data= base_trajet1, popup = paste("User 1 departure:", station1) )%>%
+      addMarkers(lng = base_trajet1$stop_lon[dim(base_trajet1)[1]], lat = base_trajet1$stop_lat[dim(base_trajet1)[1]], data= base_trajet1, popup = paste("Meeting point:", sol$mid$stop_name))%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet1 %>% filter(route_short_name== 1, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#FFCD00")%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet1 %>% filter(route_short_name== 2, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#003CA6")%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet1 %>% filter(route_short_name== 3, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#837902")%>%
@@ -211,8 +211,8 @@ shinyServer(function(input, output) {
       # Add CartoDB background map
       addProviderTiles("CartoDB.DarkMatter") %>%  
       # Add a marker for each stop
-      addMarkers(lng = base_trajet2$stop_lon[1], lat = base_trajet2$stop_lat[1], data= base_trajet2, popup = "Départ User 1")%>%
-      addMarkers(lng = base_trajet2$stop_lon[dim(base_trajet2)[1]], lat = base_trajet2$stop_lat[dim(base_trajet2)[1]], data= base_trajet2, popup = "Départ user 2")%>%
+      addMarkers(lng = base_trajet2$stop_lon[1], lat = base_trajet2$stop_lat[1], data= base_trajet2, popup = paste("Meeting point:", sol$mid$stop_name))%>%
+      addMarkers(lng = base_trajet2$stop_lon[dim(base_trajet2)[1]], lat = base_trajet2$stop_lat[dim(base_trajet2)[1]], data= base_trajet2, popup = paste("User 2 departure:",station2 ))%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet2 %>% filter(route_short_name== 1, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#FFCD00")%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet2 %>% filter(route_short_name== 2, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#003CA6")%>%
       addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet2 %>% filter(route_short_name== 3, direction_id ==0), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#837902")%>%
