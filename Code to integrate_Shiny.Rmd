@@ -17,8 +17,8 @@ library(dplyr)
 library(leaflet)
 library(forcats)
 
-temps_trajet <- read.csv2("temps_trajet.csv")
-base_trajet_total <- read.csv2("base_trajet_total.csv")
+temps_trajet <- read.csv2("Data/temps_trajet.csv")
+base_trajet_total <- read.csv2("Data/base_trajet_total.csv")
 
 
 #View(temps_trajet)
@@ -371,5 +371,70 @@ V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name
 ```
 
 
+
+
+
+
+```{r}
+pathlist_from <-c()
+for (i in 1:(length(V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name)-1)){
+  pathlist_from[i] <- trajet_plus_court$vpath[[n_colonne]]$name[i]
+}
+
+pathlist_to <- c()
+for (i in 2:(length(V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name))){
+  pathlist_to[i-1] <- trajet_plus_court$vpath[[n_colonne]]$name[i]
+}
+
+traj <-c()
+for (i in 1:(length(V(temps_trajet_igraph)[trajet_plus_court$vpath[[n_colonne]]]$name)-1)){
+  traj[i] <- (temps_trajet %>% filter(from_stop_id == trajet_plus_court$vpath[[n_colonne]]$name[i], to_stop_id == trajet_plus_court$vpath[[n_colonne]]$name[i+1]))$weight[1]
+}
+
+#traj <- is.numeric(as.character(traj))
+
+chemin <- cbind(pathlist_from,pathlist_to,traj)
+chemin <- as.data.frame(chemin)
+chemin$traj <- as.numeric(chemin$traj)
+
+# cumsum des temps de trajet
+
+chemin <- chemin %>% transform(Total = ave(traj, FUN = cumsum))
+
+View(chemin)
+
+#mi-chemin
+
+mid <- max(chemin$Total)/2
+mid
+
+output <- (chemin %>% filter(Total > mid ))$pathlist_to[1]
+output
+
+
+c1 <- (chemin %>% filter(Total <= mid))$pathlist_from
+c1 <- as.numeric(c1)
+c1
+c2 <- (chemin %>% filter(Total <= mid))$pathlist_to
+c2 <- as.numeric(as.factor(c1))
+
+
+
+chemin_1 <- unique(c(c1,c2))
+chemin_1
+
+base_trajet1 <- base_trajet_total %>% filter (stop_id %in% chemin_1) %>% slice(match(chemin_1, stop_id))
+
+
+
+chemin_2 <- rev((chemin %>% filter( Total > mid))$pathlist_to) # Attention, pas même que 1
+base_trajet2 <- base_trajet_total %>% filter (stop_id %in% chemin_2) %>% slice(match(chemin_2, stop_id))
+
+View(base_trajet1)
+
+View(base_trajet2)
+
+
+```
 
 
