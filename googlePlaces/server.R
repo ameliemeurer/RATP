@@ -22,6 +22,7 @@ shinyServer(function(input, output) {
 
   base_trajet_total <- read.csv2("../base_trajet_total.csv")
   temps_trajet <- read.csv2("temps_trajet.csv")
+  base_trajet_court <- read.csv2("../base_trajet_court.csv")
   
   stations <- unique(base_trajet_total$stop_name)
   
@@ -97,7 +98,7 @@ shinyServer(function(input, output) {
     addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== "B", trip_headsign == "SOIR"), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#7BA3DC")%>%
     addPolylines(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court %>% filter(route_short_name== "B", trip_headsign == "KOCQ"), group = ~ route_id, weight = 2,  fillOpacity = 0.5, color = "#7BA3DC")%>%
     
-    addCircleMarkers(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_court, stroke = FALSE, 
+    addCircleMarkers(lng= ~ stop_lon, lat= ~stop_lat, data = base_trajet_total, stroke = FALSE, 
                      fillOpacity = 0.5, radius =4, color = ~ factpal(route_short_name)) %>% 
     addLegend(colors =c("#FFCD00", "#003CA6", "#837902", "#00AE41", "#CF009E", "#FF7E2E", "#6ECA97", "#FA9ABA", "#6ECA97", "#E19BDF", "#B6BD00", "#C9910D", "#704B1C", "#007852", "#6EC4E8", "#62259D", "#E2231A", "#7BA3DC"),
               labels = levels(base_trajet_total$route_short_name),title = "Metro line Paris")
