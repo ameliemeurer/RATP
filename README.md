@@ -2,7 +2,7 @@
 
 
 Guidelines:
-To simplify running of code, download ‘base_trajet_total.csv’ and ‘temps_trajet.csv’ directly  to avoid having to merge all the databases from scratch
+To simplify running of code, download the entire file (containing ‘base_trajet_total.csv’ and ‘temps_trajet.csv’)  to avoid having to merge all the databases from scratch
 
 Keywords : Djisktra, metro, Shiny
 
